@@ -1,0 +1,142 @@
+import java.util.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+
+public class Main {
+
+    static ArrayList<Evento> eventos = new ArrayList<>();
+    static ArrayList<Usuario> usuarios = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    public static void main(String[] args) {
+
+        carregarEventos();
+
+        int op;
+
+        do {
+            System.out.println("\n=== MENU ===");
+            System.out.println("1 - Cadastrar usuário");
+            System.out.println("2 - Listar eventos");
+            System.out.println("3 - Participar de evento");
+            System.out.println("4 - Cancelar participação");
+            System.out.println("5 - Meus eventos");
+            System.out.println("0 - Sair");
+
+            op = sc.nextInt();
+            sc.nextLine();
+
+            switch (op) {
+                case 1: cadastrarUsuario(); break;
+                case 2: listarEventos(); break;
+                case 3: participar(); break;
+                case 4: cancelar(); break;
+                case 5: meusEventos(); break;
+            }
+
+        } while (op != 0);
+    }
+
+    static void carregarEventos() {
+
+        eventos.add(new Evento(
+            "Rede Kids",
+            "Av. Jerimanduba, 730 - Jaraguá",
+            Categoria.JOVENS,
+            LocalDateTime.parse("26/03/2026 20:00", formatter),
+            "Crianças",
+            "Inemp 12"
+        ));
+
+        eventos.add(new Evento(
+            "Rede de Homens",
+            "Av. Jerimanduba, 730 - Jaraguá",
+            Categoria.RELIGIOSO,
+            LocalDateTime.parse("04/04/2026 20:00", formatter),
+            "Homens +18",
+            "Inemp 12"
+        ));
+
+        eventos.add(new Evento(
+            "Festa da Páscoa Santa Ceia",
+            "Av. Jerimanduba, 730 - Jaraguá",
+            Categoria.RELIGIOSO,
+            LocalDateTime.parse("05/04/2026 09:30", formatter),
+            "Todos",
+            "Inemp 12"
+        ));
+
+        eventos.add(new Evento(
+            "Discipulado para Líderes de Células",
+            "Av. Jerimanduba, 730 - Jaraguá",
+            Categoria.SEMINARIO,
+            LocalDateTime.parse("19/04/2026 08:00", formatter),
+            "Líderes",
+            "Inemp 12"
+        ));
+    }
+
+    static void cadastrarUsuario() {
+        System.out.println("Nome:");
+        String nome = sc.nextLine();
+
+        System.out.println("Idade:");
+        int idade = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Email:");
+        String email = sc.nextLine();
+
+        usuarios.add(new Usuario(nome, idade, email));
+    }
+
+    static void listarEventos() {
+        eventos.sort(Comparator.comparing(e -> e.dataHora));
+
+        for (int i = 0; i < eventos.size(); i++) {
+            System.out.println("ID: " + i);
+            eventos.get(i).mostrar();
+        }
+    }
+
+    static Usuario escolherUsuario() {
+        for (int i = 0; i < usuarios.size(); i++) {
+            System.out.println(i + " - " + usuarios.get(i).nome);
+        }
+        int i = sc.nextInt();
+        sc.nextLine();
+        return usuarios.get(i);
+    }
+
+    static Evento escolherEvento() {
+        listarEventos();
+        int i = sc.nextInt();
+        sc.nextLine();
+        return eventos.get(i);
+    }
+
+    static void participar() {
+        Usuario u = escolherUsuario();
+        Evento e = escolherEvento();
+        u.participar(e);
+        System.out.println("Participação confirmada!");
+    }
+
+    static void cancelar() {
+        Usuario u = escolherUsuario();
+        u.listarEventos();
+
+        int i = sc.nextInt();
+        sc.nextLine();
+
+        u.eventos.remove(i);
+        System.out.println("Cancelado!");
+    }
+
+    static void meusEventos() {
+        Usuario u = escolherUsuario();
+        u.listarEventos();
+    }
+}
