@@ -1,0 +1,31 @@
+import java.time.LocalDateTime;
+
+public class Evento {
+    String nome;
+    String endereco;
+    Categoria categoria;
+    LocalDateTime dataHora;
+    String publico;
+    String local;
+
+    public Evento(String nome, String endereco, Categoria categoria,
+                  LocalDateTime dataHora, String publico, String local) {
+
+        this.nome = nome;
+        this.endereco = endereco;
+        this.categoria = categoria;
+        this.dataHora = dataHora;
+        this.publico = publico;
+        this.local = local;
+    }
+
+    public void mostrar() {
+        System.out.println(nome);
+        System.out.println("Categoria: " + categoria);
+        System.out.println("Data: " + dataHora);
+        System.out.println("Endereço: " + endereco);
+        System.out.println("Público: " + publico);
+        System.out.println("Local: " + local);
+        System.out.println("-------------------------");
+    }
+}
